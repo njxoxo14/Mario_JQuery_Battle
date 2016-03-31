@@ -1,13 +1,14 @@
 // TODO: Change these values to your own images & colors!
-var BACKGROUND_IMG = "images/background.jpg";
-var HERO_IMG = "images/Megaman.png";
-var FINISH_IMG = "images/finish.png";
-var TEXT_COLOR = "purple";
+var BACKGROUND_IMG = "http://images.8tracks.com/cover/i/008/829/550/2732344-background-of-space-with-stars-2631.jpg?rect=0,0,800,800&q=98&fm=jpg&fit=max";
+var HERO_IMG = "images/Mario.jpg";
+var FINISH_IMG = "http://findicons.com/files/icons/2297/super_mario/32/star.png";
+var TEXT_COLOR = "white";
+
 
 
 // Stores the hero sprite position.
 var hero = {
-  speed: 50, // Movement speed in pixels per second.
+  speed: 100, // Movement speed in pixels per second.
   x: 0,
   y: 0
 };
@@ -35,8 +36,9 @@ function reset() {
   hero.y = height / 2;
 
   // TODO: Position the finish line somewhere random.
-  finish.x = 0;
-  finish.y = 0;
+  finish.x = Math.floor(Math.random()*width-1);
+  finish.y = Math.floor(Math.random()*height-1);
+  
 };
 
 
@@ -49,18 +51,20 @@ function update(canvas, duration) {
   }
   if (40 in keysPressed) { // DOWN ARROW
     // TODO: Handle down arrow
+    hero.y += hero.speed* duration;
   }
   if (37 in keysPressed) { // LEFT ARROW
     // TODO: Handle left arrow
+    hero.x-= hero.speed * duration;
   }
   if (39 in keysPressed) { // RIGHT ARROW
     // TODO: Handle right arrow
+    hero.x+= hero.speed * duration;
   }
-
   // TODO: Is megaman at the finish line? (modify 'false' -- DUH)
   // THINK: is the hero's (x, y) within the finish line's
   // (x, y, x + width, y + height)?
-  if (false) {
+  if (hero.y < finish.y + finish.height && hero.x < finish.x + finish.width || hero.y == finish.y && hero.x == finish.x) {
     wins++;
     canvas.fillText("YOU WON!", 50, 100);
     reset();
@@ -80,10 +84,12 @@ function render(canvas) {
   }
 
   if (heroImage != null) {
+    canvas.drawImage(heroImage,hero.x,hero.y);
     // TODO: Draw the heroImage at hero.x, hero.y.
   }
 
   if (finishImage != null) {
+    canvas.drawImage(finishImage,finish.x,finish.y);
     // TODO: Draw the finishImage at finish.x, finish.y.
   }
 
